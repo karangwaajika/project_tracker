@@ -4,6 +4,8 @@ import com.lab.project_tracker.exception.ProjectExistsException;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.repository.ProjectRepository;
 import com.lab.project_tracker.service.ProjectService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,6 +31,11 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Optional<Project> findProjectByName(String name) {
         return this.projectRepository.findProjectByName(name);
+    }
+
+    @Override
+    public Page<Project> findAll(Pageable pageable) {
+        return this.projectRepository.findAll(pageable);
     }
 
     @Override

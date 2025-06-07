@@ -5,6 +5,8 @@ import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,5 +43,13 @@ public class ProjectController {
         }
         return ResponseEntity.status(HttpStatus.OK).body(project);
     }
+
+    @GetMapping(name = "view_projects", path = "view")
+    @Operation(summary = "View Projects",
+            description = "This method applies pagination for efficient retrieval of projects list")
+    public Page<Project> viewProjects(Pageable pageable){
+        return this.projectService.findAll(pageable);
+    }
+
 
 }
