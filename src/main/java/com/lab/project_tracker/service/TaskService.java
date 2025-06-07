@@ -5,5 +5,5 @@ import com.lab.project_tracker.dto.TaskResponseDto;
 import com.lab.project_tracker.model.Task;
 
 public interface TaskService {
-    TaskResponseDto create(TaskDto task);
+    Task create(TaskDto taskDto);
 }
