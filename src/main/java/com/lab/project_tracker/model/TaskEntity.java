@@ -1,44 +1,39 @@
 package com.lab.project_tracker.model;
-
-import com.lab.project_tracker.util.ProjectStatus;
+import com.lab.project_tracker.util.TaskStatus;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "project")
-public class Project {
+@Table(name = "task")
+public class TaskEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
-    private String name;
+    @NotEmpty
+    private String title;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    private LocalDate deadline;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ProjectStatus status;
+    private TaskStatus status;
 
-    @Builder.Default
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDate dueDate;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<TaskEntity> taskEntities = new ArrayList<>();
-
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 }
