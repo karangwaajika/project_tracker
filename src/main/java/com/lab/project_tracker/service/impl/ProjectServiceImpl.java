@@ -1,6 +1,8 @@
 package com.lab.project_tracker.service.impl;
 
+import com.lab.project_tracker.dto.ProjectDto;
 import com.lab.project_tracker.exception.ProjectExistsException;
+import com.lab.project_tracker.exception.ProjectNotFoundException;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.repository.ProjectRepository;
 import com.lab.project_tracker.service.ProjectService;
@@ -39,8 +41,33 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public Project partialUpdate(ProjectDto projectDto, Long id) {
+        Project project = findProjectById(id)
+                .orElseThrow( () -> new ProjectNotFoundException(
+                        String.format("A project with the Id '%d' doesn't exist", id))
+                );
+        // update only fields that are provided
+        if(projectDto.getName() != null){
+            project.setName(projectDto.getName());
+        }
+        if(projectDto.getDeadline() != null){
+            project.setDeadline(projectDto.getDeadline());
+        }
+        if(projectDto.getDescription() != null){
+            project.setDescription(projectDto.getDescription());
+        }
+        if(projectDto.getStatus() != null){
+            project.setStatus(projectDto.getStatus());
+        }
+
+        return this.projectRepository.save(project);
+    }
+
+    @Override
     public Optional<Project> findProjectById(Long id) {
         return this.projectRepository.findById(id);
     }
+
+
 
 }

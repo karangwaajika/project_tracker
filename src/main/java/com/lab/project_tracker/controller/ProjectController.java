@@ -1,5 +1,6 @@
 package com.lab.project_tracker.controller;
 
+import com.lab.project_tracker.dto.ProjectDto;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.service.ProjectService;
@@ -25,7 +26,8 @@ public class ProjectController {
 
     @PostMapping(name = "add_project", path = "/add")
     @Operation(summary = "Create project",
-            description = "This request inserts a project to the database and returns the inserted project ")
+            description = "This request inserts a project to the database and returns " +
+                          "the inserted project ")
     public ResponseEntity<Project> addProject(@RequestBody Project project){
         Project savedProject = this.projectService.create(project);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProject);
@@ -46,10 +48,24 @@ public class ProjectController {
 
     @GetMapping(name = "view_projects", path = "view")
     @Operation(summary = "View Projects",
-            description = "This method applies pagination for efficient retrieval of projects list")
+            description = "This method applies pagination for efficient retrieval " +
+                          "of projects list")
     public Page<Project> viewProjects(Pageable pageable){
         return this.projectService.findAll(pageable);
     }
+
+    @PatchMapping(name = "update_project", path = "/update/{id}")
+    @Operation(summary = "Update Project",
+            description = "The project can be updated partially, " +
+                          "it's doesn't necessary required " +
+                          "all the fields to be updated")
+    public ResponseEntity<Project> updateProject(@RequestBody ProjectDto projectDto,
+                                                 @PathVariable Long id){
+
+        Project updatedProject = this.projectService.partialUpdate(projectDto, id);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProject);
+    }
+
 
 
 }
