@@ -12,8 +12,8 @@ public interface ProjectService {
     Optional<Project> findProjectById(Long id);
     Optional<Project> findProjectByName(String name);
     Page<Project> findAll(Pageable pageable);
-
     Project partialUpdate(ProjectDto projectdto, Long id);
+    void deleteById(Long id);
 
 
 }

@@ -64,10 +64,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public void deleteById(Long id) {
+        if(findProjectById(id).isEmpty()){
+            throw new ProjectExistsException(
+                    String.format("A project with the name '%d' already exist",
+                            id));
+        }
+        this.projectRepository.deleteById(id);
+    }
+
+    @Override
     public Optional<Project> findProjectById(Long id) {
         return this.projectRepository.findById(id);
     }
-
-
 
 }

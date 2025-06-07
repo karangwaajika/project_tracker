@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -66,6 +67,16 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedProject);
     }
 
+    @DeleteMapping(name = "delete_project", path = "/delete")
+    @Operation(summary = "Delete Project",
+            description = "The project is delete using its id that is retrieved " +
+                          "as a query parameter from the url")
+    public ResponseEntity<?> deleteProject(@RequestParam Long id){
+        this.projectService.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of("message", "Project deleted successfully"));
+    }
 
 
 }
