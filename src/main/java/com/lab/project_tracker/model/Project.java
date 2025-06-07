@@ -39,6 +39,6 @@ public class Project {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<Task> tasks = new ArrayList<>();
+    private List<TaskEntity> taskEntities = new ArrayList<>();
 
 }

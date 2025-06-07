@@ -4,11 +4,11 @@ import com.lab.project_tracker.dto.ProjectDto;
 import com.lab.project_tracker.dto.TaskDto;
 import com.lab.project_tracker.dto.TaskResponseDto;
 import com.lab.project_tracker.model.Project;
-import com.lab.project_tracker.model.Task;
+import com.lab.project_tracker.model.TaskEntity;
 
 public class TaskMapper {
-    public static Task toEntity(TaskDto taskDto, Project project) {
-        return Task.builder()
+    public static TaskEntity toEntity(TaskDto taskDto, Project project) {
+        return TaskEntity.builder()
                 .title(taskDto.getTitle())
                 .description(taskDto.getDescription())
                 .status(taskDto.getStatus())
@@ -17,8 +17,8 @@ public class TaskMapper {
                 .build();
     }
 
-    public static TaskResponseDto toResponseDto(Task task) {
-        Project project = task.getProject();
+    public static TaskResponseDto toResponseDto(TaskEntity taskEntity) {
+        Project project = taskEntity.getProject();
 
         ProjectDto projectDto = new ProjectDto();
         projectDto.setId(project.getId());
@@ -29,11 +29,13 @@ public class TaskMapper {
         projectDto.setCreatedAt(project.getCreatedAt());
 
         TaskResponseDto dto = new TaskResponseDto();
-        dto.setId(task.getId());
-        dto.setTitle(task.getTitle());
-        dto.setDescription(task.getDescription());
-        dto.setStatus(task.getStatus());
-        dto.setDueDate(task.getDueDate());
+        dto.setId(taskEntity.getId());
+        dto.setTitle(taskEntity.getTitle());
+        dto.setDescription(taskEntity.getDescription());
+        dto.setStatus(taskEntity.getStatus());
+        dto.setDueDate(taskEntity.getDueDate());
+        /* with this projectDto we're no longer returning the actual Project
+        * in which the task list is present. here we created the project without */
         dto.setProject(projectDto);
 
         return dto;

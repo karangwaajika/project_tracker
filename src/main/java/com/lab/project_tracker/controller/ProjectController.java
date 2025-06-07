@@ -1,7 +1,9 @@
 package com.lab.project_tracker.controller;
 
 import com.lab.project_tracker.dto.ProjectDto;
+import com.lab.project_tracker.dto.ProjectResponseDto;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
+import com.lab.project_tracker.mapper.ProjectMapper;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,14 +39,15 @@ public class ProjectController {
     @GetMapping(name = "view_project_by_id", path = "/view/{id}")
     @Operation(summary = "View Project",
             description = "Search and view only one project using project ID")
-    public ResponseEntity<Optional<Project>> viewProject(@PathVariable Long id){
+    public ResponseEntity<ProjectResponseDto> viewProject(@PathVariable Long id){
         Optional<Project> project = this.projectService.findProjectById(id);
 
         if(project.isEmpty()){
             throw new ProjectNotFoundException(
                     String.format("A project with the Id '%d' doesn't exist", id));
         }
-        return ResponseEntity.status(HttpStatus.OK).body(project);
+        ProjectResponseDto projectResponseDto = ProjectMapper.toResponseDto(project.get());
+        return ResponseEntity.status(HttpStatus.OK).body(projectResponseDto);
     }
 
     @GetMapping(name = "view_projects", path = "view")

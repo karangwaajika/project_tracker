@@ -3,7 +3,7 @@ package com.lab.project_tracker.controller;
 import com.lab.project_tracker.dto.TaskDto;
 import com.lab.project_tracker.dto.TaskResponseDto;
 import com.lab.project_tracker.mapper.TaskMapper;
-import com.lab.project_tracker.model.Task;
+import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,8 +29,8 @@ public class TaskController {
             description = "This request inserts a task to the database and returns " +
                           "the inserted task ")
     public ResponseEntity<TaskResponseDto> addTask(@RequestBody TaskDto taskDto){
-        Task savedTask = this.taskService.create(taskDto);
-        TaskResponseDto taskResponseDto= TaskMapper.toResponseDto(savedTask);
+        TaskEntity savedTaskEntity = this.taskService.create(taskDto);
+        TaskResponseDto taskResponseDto= TaskMapper.toResponseDto(savedTaskEntity);
         return ResponseEntity.status(HttpStatus.CREATED).body(taskResponseDto);
     }
 }

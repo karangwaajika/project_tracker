@@ -1,7 +1,7 @@
 package com.lab.project_tracker.repository;
 
-import com.lab.project_tracker.model.Task;
+import com.lab.project_tracker.model.TaskEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TaskRepository extends JpaRepository<Task, Long> {
+public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
 }

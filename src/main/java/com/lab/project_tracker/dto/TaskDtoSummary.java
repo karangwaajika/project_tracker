@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 /*
-* this is dto is used for inserting or updating */
+* this is dto is used task is nested */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaskDto {
+public class TaskDtoSummary {
+    private Long id;
     private String title;
     private String description;
     private LocalDate dueDate;
     private TaskStatus status;
-    private Long projectId;
 }
