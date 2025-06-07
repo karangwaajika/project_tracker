@@ -1,6 +1,6 @@
 package com.lab.project_tracker.mapper;
 
-import com.lab.project_tracker.dto.ProjectDto;
+import com.lab.project_tracker.dto.ProjectDtoSummary;
 import com.lab.project_tracker.dto.TaskDto;
 import com.lab.project_tracker.dto.TaskResponseDto;
 import com.lab.project_tracker.model.Project;
@@ -20,7 +20,7 @@ public class TaskMapper {
     public static TaskResponseDto toResponseDto(TaskEntity taskEntity) {
         Project project = taskEntity.getProject();
 
-        ProjectDto projectDto = new ProjectDto();
+        ProjectDtoSummary projectDto = new ProjectDtoSummary();
         projectDto.setId(project.getId());
         projectDto.setName(project.getName());
         projectDto.setDeadline(project.getDeadline());

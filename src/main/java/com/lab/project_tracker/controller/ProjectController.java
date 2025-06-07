@@ -31,9 +31,10 @@ public class ProjectController {
     @Operation(summary = "Create project",
             description = "This request inserts a project to the database and returns " +
                           "the inserted project ")
-    public ResponseEntity<Project> addProject(@RequestBody Project project){
-        Project savedProject = this.projectService.create(project);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProject);
+    public ResponseEntity<ProjectResponseDto> addProject(@RequestBody ProjectDto projectDto){
+        Project savedProject = this.projectService.create(projectDto);
+        ProjectResponseDto savedProjectDto = ProjectMapper.toResponseDto(savedProject);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedProjectDto);
     }
 
     @GetMapping(name = "view_project_by_id", path = "/view/{id}")
@@ -54,7 +55,7 @@ public class ProjectController {
     @Operation(summary = "View Projects",
             description = "This method applies pagination for efficient retrieval " +
                           "of projects list")
-    public Page<Project> viewProjects(Pageable pageable){
+    public Page<ProjectResponseDto> viewProjects(Pageable pageable){
         return this.projectService.findAll(pageable);
     }
 
@@ -63,11 +64,12 @@ public class ProjectController {
             description = "The project can be updated partially, " +
                           "it's doesn't necessary required " +
                           "all the fields to be updated")
-    public ResponseEntity<Project> updateProject(@RequestBody ProjectDto projectDto,
+    public ResponseEntity<ProjectResponseDto> updateProject(@RequestBody ProjectDto projectDto,
                                                  @PathVariable Long id){
 
         Project updatedProject = this.projectService.partialUpdate(projectDto, id);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedProject);
+        ProjectResponseDto updatedProjectDto = ProjectMapper.toResponseDto(updatedProject);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedProjectDto);
     }
 
     @DeleteMapping(name = "delete_project", path = "/delete")

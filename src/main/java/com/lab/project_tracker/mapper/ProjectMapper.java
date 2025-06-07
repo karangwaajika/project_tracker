@@ -1,11 +1,13 @@
 package com.lab.project_tracker.mapper;
 
+import com.lab.project_tracker.dto.ProjectDto;
 import com.lab.project_tracker.dto.ProjectResponseDto;
 import com.lab.project_tracker.dto.TaskDto;
 import com.lab.project_tracker.dto.TaskDtoSummary;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.model.TaskEntity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,5 +46,18 @@ public class ProjectMapper {
         dto.setStatus(task.getStatus());
         dto.setDueDate(task.getDueDate());
         return dto;
+    }
+
+    public static Project toEntity(ProjectDto dto) {
+        Project project = new Project();
+
+        project.setName(dto.getName());
+        project.setDescription(dto.getDescription());
+        project.setDeadline(dto.getDeadline());
+        project.setStatus(dto.getStatus());
+        project.setCreatedAt(LocalDateTime.now());
+        project.setTaskEntities(new ArrayList<>()); // not set
+
+        return project;
     }
 }

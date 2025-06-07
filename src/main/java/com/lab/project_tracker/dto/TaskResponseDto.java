@@ -18,5 +18,5 @@ public class TaskResponseDto {
     private String description;
     private TaskStatus status;
     private LocalDate dueDate;
-    private ProjectDto project;
+    private ProjectDtoSummary project;
 }

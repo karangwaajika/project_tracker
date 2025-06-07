@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-/*
-* this is dto is used task is nested */
+/* this is dto is used task is nested */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

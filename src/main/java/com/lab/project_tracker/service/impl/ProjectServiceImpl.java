@@ -1,8 +1,10 @@
 package com.lab.project_tracker.service.impl;
 
 import com.lab.project_tracker.dto.ProjectDto;
+import com.lab.project_tracker.dto.ProjectResponseDto;
 import com.lab.project_tracker.exception.ProjectExistsException;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
+import com.lab.project_tracker.mapper.ProjectMapper;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.repository.ProjectRepository;
 import com.lab.project_tracker.service.ProjectService;
@@ -21,12 +23,14 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project create(Project project) {
-        if(findProjectByName(project.getName()).isPresent()){
+    public Project create(ProjectDto projectDto) {
+        if(findProjectByName(projectDto.getName()).isPresent()){
             throw new ProjectExistsException(
                     String.format("A project with the name '%s' already exist",
-                            project.getName()));
+                            projectDto.getName()));
         }
+
+        Project project = ProjectMapper.toEntity(projectDto);
         return this.projectRepository.save(project);
     }
 
@@ -36,8 +40,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Page<Project> findAll(Pageable pageable) {
-        return this.projectRepository.findAll(pageable);
+    public Page<ProjectResponseDto> findAll(Pageable pageable) {
+        Page<Project> projectPage = this.projectRepository.findAll(pageable);
+        //project -> ProjectMapper.toResponseDto(project)
+        return projectPage.map(ProjectMapper::toResponseDto);
     }
 
     @Override

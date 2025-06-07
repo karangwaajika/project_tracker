@@ -8,8 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-/*
-* this is dto is used for inserting or updating */
+/* this is dto is used for inserting or updating */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
