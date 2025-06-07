@@ -14,4 +14,10 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Map.of("Error", e.getMessage()));
     }
+
+    @ExceptionHandler(ProjectNotFoundException.class)
+    public ResponseEntity<?> handleProjectNotFound(ProjectNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("Error", e.getMessage()));
+    }
 }
