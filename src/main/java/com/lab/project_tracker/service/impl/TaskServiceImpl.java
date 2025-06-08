@@ -1,6 +1,7 @@
 package com.lab.project_tracker.service.impl;
 
 import com.lab.project_tracker.dto.TaskDto;
+import com.lab.project_tracker.dto.TaskResponseDto;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
 import com.lab.project_tracker.exception.TaskExistsException;
 import com.lab.project_tracker.mapper.TaskMapper;
@@ -9,6 +10,8 @@ import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.repository.TaskRepository;
 import com.lab.project_tracker.service.ProjectService;
 import com.lab.project_tracker.service.TaskService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -52,6 +55,13 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Optional<TaskEntity> findTaskByTitle(String title) {
         return this.taskRepository.findTaskEntitiesByTitle(title);
+    }
+
+    @Override
+    public Page<TaskResponseDto> findAll(Pageable pageable) {
+        Page<TaskEntity> taskEntityPage = this.taskRepository.findAll(pageable);
+
+        return taskEntityPage.map(TaskMapper::toResponseDto);
     }
 
 }

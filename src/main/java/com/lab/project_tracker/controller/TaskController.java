@@ -8,6 +8,8 @@ import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,4 +49,13 @@ public class TaskController {
         TaskResponseDto taskResponseDto = TaskMapper.toResponseDto(task.get());
         return ResponseEntity.status(HttpStatus.OK).body(taskResponseDto);
     }
+
+    @GetMapping(name = "view_tasks", path = "view")
+    @Operation(summary = "View Tasks",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of tasks list")
+    public Page<TaskResponseDto> viewProjects(Pageable pageable){
+        return this.taskService.findAll(pageable);
+    }
+
 }
