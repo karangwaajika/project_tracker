@@ -1,7 +1,7 @@
 package com.lab.project_tracker.service;
 
-import com.lab.project_tracker.dto.ProjectDto;
-import com.lab.project_tracker.dto.ProjectResponseDto;
+import com.lab.project_tracker.dto.project.ProjectDto;
+import com.lab.project_tracker.dto.project.ProjectResponseDto;
 import com.lab.project_tracker.model.Project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

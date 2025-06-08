@@ -1,5 +1,6 @@
-package com.lab.project_tracker.dto;
+package com.lab.project_tracker.dto.task;
 
+import com.lab.project_tracker.dto.project.ProjectDtoSummary;
 import com.lab.project_tracker.util.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,15 +9,15 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-/* this is dto is used for inserting or updating */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaskDto {
+public class TaskResponseDto {
+    private Long id;
     private String title;
     private String description;
-    private LocalDate dueDate;
     private TaskStatus status;
-    private Long projectId;
+    private LocalDate dueDate;
+    private ProjectDtoSummary project;
 }

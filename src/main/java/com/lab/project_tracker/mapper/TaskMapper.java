@@ -1,8 +1,8 @@
 package com.lab.project_tracker.mapper;
 
-import com.lab.project_tracker.dto.ProjectDtoSummary;
-import com.lab.project_tracker.dto.TaskDto;
-import com.lab.project_tracker.dto.TaskResponseDto;
+import com.lab.project_tracker.dto.project.ProjectDtoSummary;
+import com.lab.project_tracker.dto.task.TaskDto;
+import com.lab.project_tracker.dto.task.TaskResponseDto;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.model.TaskEntity;
 

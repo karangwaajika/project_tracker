@@ -1,7 +1,7 @@
 package com.lab.project_tracker.controller;
 
-import com.lab.project_tracker.dto.TaskDto;
-import com.lab.project_tracker.dto.TaskResponseDto;
+import com.lab.project_tracker.dto.task.TaskDto;
+import com.lab.project_tracker.dto.task.TaskResponseDto;
 import com.lab.project_tracker.exception.TaskNotFoundException;
 import com.lab.project_tracker.mapper.TaskMapper;
 import com.lab.project_tracker.model.TaskEntity;

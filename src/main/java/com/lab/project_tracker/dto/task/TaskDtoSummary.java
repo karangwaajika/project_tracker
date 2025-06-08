@@ -1,4 +1,4 @@
-package com.lab.project_tracker.dto;
+package com.lab.project_tracker.dto.task;
 
 import com.lab.project_tracker.util.TaskStatus;
 import lombok.AllArgsConstructor;
@@ -8,15 +8,15 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/* this is dto is used task is nested */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaskResponseDto {
+public class TaskDtoSummary {
     private Long id;
     private String title;
     private String description;
-    private TaskStatus status;
     private LocalDate dueDate;
-    private ProjectDtoSummary project;
+    private TaskStatus status;
 }

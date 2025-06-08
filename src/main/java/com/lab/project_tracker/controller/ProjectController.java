@@ -1,7 +1,7 @@
 package com.lab.project_tracker.controller;
 
-import com.lab.project_tracker.dto.ProjectDto;
-import com.lab.project_tracker.dto.ProjectResponseDto;
+import com.lab.project_tracker.dto.project.ProjectDto;
+import com.lab.project_tracker.dto.project.ProjectResponseDto;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
 import com.lab.project_tracker.mapper.ProjectMapper;
 import com.lab.project_tracker.model.Project;

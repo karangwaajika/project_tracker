@@ -1,5 +1,6 @@
-package com.lab.project_tracker.dto;
+package com.lab.project_tracker.dto.project;
 
+import com.lab.project_tracker.dto.task.TaskDtoSummary;
 import com.lab.project_tracker.util.ProjectStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
