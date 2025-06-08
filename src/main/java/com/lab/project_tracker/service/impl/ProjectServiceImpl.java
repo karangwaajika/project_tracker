@@ -43,13 +43,14 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         Project project = ProjectMapper.toEntity(projectDto);
+        Project savedProject = this.projectRepository.save(project);
 
         // insert log action for create project
         this.auditLogService.logAction(
-                "CREATE", "Project", project.getId().toString(), "user",
-                Map.of("name", project.getName(), "description", project.getDescription())
+                "CREATE", "Project", savedProject.getId().toString(), "user",
+                Map.of("name", savedProject.getName(), "description", savedProject.getDescription())
         );
-        return this.projectRepository.save(project);
+        return savedProject;
     }
 
     @Override
