@@ -4,6 +4,7 @@ import com.lab.project_tracker.dto.TaskDto;
 import com.lab.project_tracker.dto.TaskResponseDto;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
 import com.lab.project_tracker.exception.TaskExistsException;
+import com.lab.project_tracker.exception.TaskNotFoundException;
 import com.lab.project_tracker.mapper.TaskMapper;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.model.TaskEntity;
@@ -62,6 +63,35 @@ public class TaskServiceImpl implements TaskService {
         Page<TaskEntity> taskEntityPage = this.taskRepository.findAll(pageable);
 
         return taskEntityPage.map(TaskMapper::toResponseDto);
+    }
+
+    @Override
+    public TaskEntity partialUpdate(TaskDto taskDto, Long id) {
+        TaskEntity taskEntity = findTaskById(id)
+                .orElseThrow(() -> new TaskNotFoundException(
+                        String.format("A project with the Id '%d' doesn't exist", id)));
+        if(taskDto.getTitle() != null){
+            taskEntity.setTitle(taskDto.getTitle());
+        }
+        if(taskDto.getDescription() != null){
+            taskEntity.setDescription(taskDto.getDescription());
+        }
+        if(taskDto.getDueDate() != null){
+            taskEntity.setDueDate(taskDto.getDueDate());
+        }
+        if(taskDto.getStatus() != null){
+            taskEntity.setStatus(taskDto.getStatus());
+        }
+        if(taskDto.getProjectId() != null){
+            Optional<Project> project = this.projectService.findProjectById(taskDto.getProjectId());
+            if(project.isEmpty()){
+                throw new ProjectNotFoundException(
+                        String.format("A project with the Id '%d' doesn't exist",
+                                taskDto.getProjectId()));
+            }
+            taskEntity.setProject(project.get());
+        }
+        return this.taskRepository.save(taskEntity);
     }
 
 }

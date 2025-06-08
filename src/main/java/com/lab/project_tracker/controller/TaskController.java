@@ -58,4 +58,17 @@ public class TaskController {
         return this.taskService.findAll(pageable);
     }
 
+    @PatchMapping(name = "update_task", path = "/update/{id}")
+    @Operation(summary = "Update Task",
+            description = "The task can be updated partially, " +
+                          "it's doesn't necessary required " +
+                          "all the fields to be updated")
+    public ResponseEntity<TaskResponseDto> updateTask(@RequestBody TaskDto taskDto,
+                                                            @PathVariable Long id){
+
+        TaskEntity updatedTask = this.taskService.partialUpdate(taskDto, id);
+        TaskResponseDto updatedTaskDto = TaskMapper.toResponseDto(updatedTask);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedTaskDto);
+    }
+
 }
