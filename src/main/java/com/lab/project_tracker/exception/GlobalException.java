@@ -50,4 +50,10 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Map.of("Error", e.getMessage()));
     }
+
+    @ExceptionHandler(DeveloperNotFoundException.class)
+    public ResponseEntity<?> handleDeveloperNotFound(DeveloperNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("Error", e.getMessage()));
+    }
 }

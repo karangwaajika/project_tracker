@@ -83,4 +83,14 @@ public class TaskController {
                 .body(Map.of("message", "Task deleted successfully"));
     }
 
+    @PutMapping(name = "assign_task", path = "/assign")
+    @Operation(summary = "Delete Task",
+            description = "The task is assign using its id that is retrieved " +
+                          "as a query parameter from the url")
+    public ResponseEntity<?> assignTask(@RequestParam Long taskId, @RequestParam Long developerId){
+        this.taskService.assignTaskToDeveloper(taskId, developerId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of("message", "Task assigned successfully"));
+    }
+
 }

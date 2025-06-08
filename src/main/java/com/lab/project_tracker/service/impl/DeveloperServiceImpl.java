@@ -31,16 +31,13 @@ public class DeveloperServiceImpl implements DeveloperService {
     @Override
     public DeveloperResponseDto create(DeveloperDto developerDto) {
 
-//        if (findDeveloperByEmail(developerDto.getEmail()).isPresent()) {
-//            throw new DeveloperExistsException(
-//                    String.format("A developer with the email '%s' already exists", developerDto.getEmail()));
-//        }
-//
-//        List<SkillEntity> skillList = skillService.findAllById(developerDto.getSkillIds());
-//        DeveloperEntity developer = DeveloperMapper.toEntity(developerDto, skillList);
-//
-//        return this.developerRepository.save(developer);
-        Set<SkillEntity> skillsf = skillService.findAllById(developerDto.getSkillIds());
+        if (findDeveloperByEmail(developerDto.getEmail()).isPresent()) {
+            throw new DeveloperExistsException(
+                    String.format("A developer with the email '%s' already exists", developerDto.getEmail()));
+        }
+
+
+
         Set<SkillEntity> skills = new HashSet<>(skillService.findAllById(developerDto.getSkillIds()));
         DeveloperEntity developer = DeveloperMapper.toEntity(developerDto, skills);
         DeveloperEntity saved = developerRepository.save(developer);

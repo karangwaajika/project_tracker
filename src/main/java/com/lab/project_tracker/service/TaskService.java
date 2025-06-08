@@ -16,4 +16,5 @@ public interface TaskService {
     Page<TaskResponseDto> findAll(Pageable pageable);
     TaskEntity partialUpdate(TaskDto taskDto, Long id);
     void deleteById(Long id);
+    void assignTaskToDeveloper(Long taskId, Long developerId);
 }

@@ -2,13 +2,16 @@ package com.lab.project_tracker.service.impl;
 
 import com.lab.project_tracker.dto.task.TaskDto;
 import com.lab.project_tracker.dto.task.TaskResponseDto;
+import com.lab.project_tracker.exception.DeveloperNotFoundException;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
 import com.lab.project_tracker.exception.TaskExistsException;
 import com.lab.project_tracker.exception.TaskNotFoundException;
 import com.lab.project_tracker.mapper.TaskMapper;
+import com.lab.project_tracker.model.DeveloperEntity;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.repository.TaskRepository;
+import com.lab.project_tracker.service.DeveloperService;
 import com.lab.project_tracker.service.ProjectService;
 import com.lab.project_tracker.service.TaskService;
 import org.springframework.data.domain.Page;
@@ -21,12 +24,15 @@ import java.util.Optional;
 public class TaskServiceImpl implements TaskService {
     TaskRepository taskRepository;
     ProjectService projectService;
+    DeveloperService developerService;
 
     public TaskServiceImpl(TaskRepository taskRepository,
-                           ProjectService projectService) {
+                           ProjectService projectService,
+                           DeveloperService developerService) {
 
         this.taskRepository = taskRepository;
         this.projectService = projectService;
+        this.developerService = developerService;
     }
 
     @Override
@@ -101,6 +107,21 @@ public class TaskServiceImpl implements TaskService {
                     String.format("A task with the Id '%d' doesn't exist", id));
         }
         this.taskRepository.deleteById(id);
+    }
+
+    @Override
+    public void assignTaskToDeveloper(Long taskId, Long developerId) {
+        TaskEntity task = this.taskRepository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(
+                        String.format("A task with the Id '%d' doesn't exist", taskId)
+                ));
+        DeveloperEntity developer = this.developerService.findDeveloperById(developerId)
+                .orElseThrow(() -> new DeveloperNotFoundException(
+                        String.format("A developer with the Id '%d' doesn't exist", developerId)
+                ));
+
+        task.setDeveloper(developer);
+        this.taskRepository.save(task);
     }
 
 }
