@@ -6,9 +6,11 @@ import com.lab.project_tracker.exception.TaskNotFoundException;
 import com.lab.project_tracker.mapper.TaskMapper;
 import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.service.TaskService;
+import com.lab.project_tracker.util.DeveloperTaskCount;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -109,5 +111,14 @@ public class TaskController {
     public List<TaskResponseDto> filterOverdue(){
         return this.taskService.findOverdueTasks();
     }
+
+    @GetMapping(name = "view_to_developer_tasks", path = "/topDeveloper")
+    @Operation(summary = "View Tasks",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of tasks list")
+    public List<DeveloperTaskCount> viewTopDevTasks(){
+        return this.taskService.findTopDevelopers(PageRequest.of(0, 5));
+    }
+
 
 }

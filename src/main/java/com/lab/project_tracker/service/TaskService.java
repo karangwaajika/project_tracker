@@ -4,6 +4,7 @@ package com.lab.project_tracker.service;
 import com.lab.project_tracker.dto.task.TaskDto;
 import com.lab.project_tracker.dto.task.TaskResponseDto;
 import com.lab.project_tracker.model.TaskEntity;
+import com.lab.project_tracker.util.DeveloperTaskCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -20,4 +21,5 @@ public interface TaskService {
     void assignTaskToDeveloper(Long taskId, Long developerId);
     List<TaskResponseDto> findAllByOrderByDueDateAsc();
     List<TaskResponseDto> findOverdueTasks();
+    List<DeveloperTaskCount> findTopDevelopers(Pageable pageable);
 }

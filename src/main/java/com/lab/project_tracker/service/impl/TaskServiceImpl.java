@@ -14,6 +14,7 @@ import com.lab.project_tracker.repository.TaskRepository;
 import com.lab.project_tracker.service.DeveloperService;
 import com.lab.project_tracker.service.ProjectService;
 import com.lab.project_tracker.service.TaskService;
+import com.lab.project_tracker.util.DeveloperTaskCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -136,5 +137,11 @@ public class TaskServiceImpl implements TaskService {
         List<TaskEntity> tasks = this.taskRepository.findOverdueTasks();
         return tasks.stream().map(TaskMapper::toResponseDto).toList();
     }
+
+    @Override
+    public List<DeveloperTaskCount> findTopDevelopers(Pageable pageable) {
+        return this.taskRepository.findTopDevelopers(pageable);
+    }
+
 
 }
