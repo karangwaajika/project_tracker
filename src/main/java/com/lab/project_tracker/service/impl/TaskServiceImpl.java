@@ -69,7 +69,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskEntity partialUpdate(TaskDto taskDto, Long id) {
         TaskEntity taskEntity = findTaskById(id)
                 .orElseThrow(() -> new TaskNotFoundException(
-                        String.format("A project with the Id '%d' doesn't exist", id)));
+                        String.format("A task with the Id '%d' doesn't exist", id)));
         if(taskDto.getTitle() != null){
             taskEntity.setTitle(taskDto.getTitle());
         }
@@ -92,6 +92,15 @@ public class TaskServiceImpl implements TaskService {
             taskEntity.setProject(project.get());
         }
         return this.taskRepository.save(taskEntity);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        if(findTaskById(id).isEmpty()){
+            throw new TaskNotFoundException(
+                    String.format("A task with the Id '%d' doesn't exist", id));
+        }
+        this.taskRepository.deleteById(id);
     }
 
 }

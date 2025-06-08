@@ -17,4 +17,5 @@ public interface TaskService {
     Optional<TaskEntity> findTaskByTitle(String title);
     Page<TaskResponseDto> findAll(Pageable pageable);
     TaskEntity partialUpdate(TaskDto taskDto, Long id);
+    void deleteById(Long id);
 }

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -69,6 +70,17 @@ public class TaskController {
         TaskEntity updatedTask = this.taskService.partialUpdate(taskDto, id);
         TaskResponseDto updatedTaskDto = TaskMapper.toResponseDto(updatedTask);
         return ResponseEntity.status(HttpStatus.OK).body(updatedTaskDto);
+    }
+
+    @DeleteMapping(name = "delete_task", path = "/delete")
+    @Operation(summary = "Delete Task",
+            description = "The task is delete using its id that is retrieved " +
+                          "as a query parameter from the url")
+    public ResponseEntity<?> deleteTask(@RequestParam Long id){
+        this.taskService.deleteById(id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of("message", "Task deleted successfully"));
     }
 
 }
