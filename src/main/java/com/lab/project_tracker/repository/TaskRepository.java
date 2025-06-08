@@ -2,6 +2,7 @@ package com.lab.project_tracker.repository;
 
 import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.util.DeveloperTaskCount;
+import com.lab.project_tracker.util.TaskStatusCount;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,6 @@ public interface TaskRepository extends JpaRepository<TaskEntity, Long> {
     @Query("SELECT t.developer.name AS developerName, COUNT(t) AS taskCount " +
            "FROM TaskEntity t GROUP BY t.developer.name ORDER BY COUNT(t) DESC")
     List<DeveloperTaskCount> findTopDevelopers(Pageable pageable);
+    @Query("SELECT t.status AS status, COUNT(t) AS count FROM TaskEntity t GROUP BY t.status")
+    List<TaskStatusCount> countTasksByStatus();
 }

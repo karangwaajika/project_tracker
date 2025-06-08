@@ -7,6 +7,7 @@ import com.lab.project_tracker.mapper.TaskMapper;
 import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.service.TaskService;
 import com.lab.project_tracker.util.DeveloperTaskCount;
+import com.lab.project_tracker.util.TaskStatusCount;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
@@ -118,6 +119,14 @@ public class TaskController {
                           "of tasks list")
     public List<DeveloperTaskCount> viewTopDevTasks(){
         return this.taskService.findTopDevelopers(PageRequest.of(0, 5));
+    }
+
+    @GetMapping(name = "view_tasks_counts", path = "/taskStatusCount")
+    @Operation(summary = "View Tasks",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of tasks list")
+    public List<TaskStatusCount> countTasksByStatus(){
+        return this.taskService.countTasksByStatus();
     }
 
 

@@ -15,6 +15,7 @@ import com.lab.project_tracker.service.DeveloperService;
 import com.lab.project_tracker.service.ProjectService;
 import com.lab.project_tracker.service.TaskService;
 import com.lab.project_tracker.util.DeveloperTaskCount;
+import com.lab.project_tracker.util.TaskStatusCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -141,6 +142,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<DeveloperTaskCount> findTopDevelopers(Pageable pageable) {
         return this.taskRepository.findTopDevelopers(pageable);
+    }
+
+    @Override
+    public List<TaskStatusCount> countTasksByStatus() {
+        return this.taskRepository.countTasksByStatus();
     }
 
 
