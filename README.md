@@ -7,13 +7,13 @@
 ![GitHub file size in bytes](https://img.shields.io/github/size/karangwaajika/codeOfAfrica-challenges/index.html)
 
 
-This lab evolves around developing a web application using Spring boot frameworks.
-To have a hands-on experience with modern Java web application development understand 
-the foundations of building and deploying Spring-based applications.
+In this lab, I developed a multi-entity Project Tracker API that uses Spring 
+Data JPA to persist data to a relational database and explore caching, transaction 
+management, and advanced querying.
 
 ## Video
 
-* Final Project: <a href="https://screenrec.com/share/jq8WAzS1rX"> Available here!</a>
+* Final Project: Not Available for now!</a>
 
 ## Diagram
 * Component diagram: <a href="https://drive.google.com/file/d/1_ltTqN6KSubbTDNp-c-W7sVSpbAdLDPH/view?usp=sharing">Available here</a>
@@ -36,8 +36,9 @@ the foundations of building and deploying Spring-based applications.
 
 ## Expected Learning Outcomes
 
-- Understand and explain the purpose of Spring and Spring Boot.
-- Demonstrate the use of IoC and DI using Spring.
-- Develop a RESTful API using Spring MVC.
-- Package and run a Spring Boot app inside a Docker container.
-- Apply software engineering practices like separation of concerns and layered architecture.
+- Map Java objects to relational tables using JPA (one-to-many, many-to-one).
+- Implement CRUD operations using Spring Data repositories.
+- Implement pagination and sorting with Spring Data JPA.
+- Use caching and transaction management for performance and data consistency.
+- Integrate a NoSQL (MongoDB) database to store and retrieve audit logs.
+- Write optimized queries using JPQL and @Query annotations.
