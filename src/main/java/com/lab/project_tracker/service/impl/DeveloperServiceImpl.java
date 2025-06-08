@@ -1,6 +1,7 @@
 package com.lab.project_tracker.service.impl;
 
 import com.lab.project_tracker.dto.developer.DeveloperDto;
+import com.lab.project_tracker.dto.developer.DeveloperResponseDto;
 import com.lab.project_tracker.exception.DeveloperExistsException;
 import com.lab.project_tracker.mapper.DeveloperMapper;
 import com.lab.project_tracker.model.DeveloperEntity;
@@ -28,17 +29,22 @@ public class DeveloperServiceImpl implements DeveloperService {
     }
 
     @Override
-    public DeveloperEntity create(DeveloperDto developerDto) {
+    public DeveloperResponseDto create(DeveloperDto developerDto) {
 
-        if (findDeveloperByEmail(developerDto.getEmail()).isPresent()) {
-            throw new DeveloperExistsException(
-                    String.format("A developer with the email '%s' already exists", developerDto.getEmail()));
-        }
-
-        List<SkillEntity> skillList = skillService.findAllById(developerDto.getSkillIds());
-        DeveloperEntity developer = DeveloperMapper.toEntity(developerDto, skillList);
-
-        return this.developerRepository.save(developer);
+//        if (findDeveloperByEmail(developerDto.getEmail()).isPresent()) {
+//            throw new DeveloperExistsException(
+//                    String.format("A developer with the email '%s' already exists", developerDto.getEmail()));
+//        }
+//
+//        List<SkillEntity> skillList = skillService.findAllById(developerDto.getSkillIds());
+//        DeveloperEntity developer = DeveloperMapper.toEntity(developerDto, skillList);
+//
+//        return this.developerRepository.save(developer);
+        Set<SkillEntity> skillsf = skillService.findAllById(developerDto.getSkillIds());
+        Set<SkillEntity> skills = new HashSet<>(skillService.findAllById(developerDto.getSkillIds()));
+        DeveloperEntity developer = DeveloperMapper.toEntity(developerDto, skills);
+        DeveloperEntity saved = developerRepository.save(developer);
+        return DeveloperMapper.toResponseDto(saved);
     }
 
     @Override

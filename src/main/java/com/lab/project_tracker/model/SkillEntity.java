@@ -1,10 +1,11 @@
 package com.lab.project_tracker.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +22,7 @@ public class SkillEntity {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "skills")
-    private Set<DeveloperEntity> developers = new HashSet<>(); // no duplicate
+//    @ManyToMany(mappedBy = "skills")
+//    @JsonBackReference
+//    private Set<DeveloperEntity> developers = new HashSet<>(); // no duplicate
 }

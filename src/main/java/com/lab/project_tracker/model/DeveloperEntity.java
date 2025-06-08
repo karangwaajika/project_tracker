@@ -7,8 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,4 +30,8 @@ public class DeveloperEntity {
             inverseJoinColumns = @JoinColumn(name = "skill_id")
     )
     private Set<SkillEntity> skills = new HashSet<>();
+
+    @OneToMany(mappedBy = "developer")
+    private List<TaskEntity> tasks; // Optional: To see which tasks this dev is assigned to
+
 }

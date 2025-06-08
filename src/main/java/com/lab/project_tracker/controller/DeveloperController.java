@@ -33,8 +33,7 @@ public class DeveloperController {
             description = "This request inserts a developer to the database and returns " +
                           "the inserted developer ")
     public ResponseEntity<DeveloperResponseDto> addDeveloper(@RequestBody DeveloperDto developerDto){
-        DeveloperEntity savedDeveloper = this.developerService.create(developerDto);
-        DeveloperResponseDto savedDeveloperDto = DeveloperMapper.toResponseDto(savedDeveloper);
+        DeveloperResponseDto savedDeveloperDto = this.developerService.create(developerDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedDeveloperDto);
     }
 

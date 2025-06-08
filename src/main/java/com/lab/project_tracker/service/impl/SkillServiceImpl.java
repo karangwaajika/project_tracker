@@ -49,7 +49,7 @@ public class SkillServiceImpl implements SkillService {
     }
 
     @Override
-    public List<SkillEntity> findAllById(Set<Long> ids) {
+    public Set<SkillEntity> findAllById(Set<Long> ids) {
         List<SkillEntity> skills = skillRepository.findAllById(ids);
 
         // Validation: ensure all requested IDs are found
@@ -63,7 +63,8 @@ public class SkillServiceImpl implements SkillService {
         if (!missingIds.isEmpty()) {
             throw new InvalidSkillException("Invalid skill IDs: " + missingIds);
         }
-        return skills;
+        new HashSet<>(skillRepository.findAllById(ids));
+        return new HashSet<>(skillRepository.findAllById(ids));
     }
 
     @Override

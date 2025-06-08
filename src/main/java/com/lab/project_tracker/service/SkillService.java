@@ -16,7 +16,7 @@ public interface SkillService {
     SkillEntity create(SkillDto skillDto);
     Optional<SkillEntity> findSkillByName(String name);
     Optional<SkillEntity> findSkillById(Long id);
-    List<SkillEntity> findAllById(Set<Long> ids);
+    Set<SkillEntity> findAllById(Set<Long> ids);
     Page<SkillResponseDto> findAll(Pageable pageable);
 
 
