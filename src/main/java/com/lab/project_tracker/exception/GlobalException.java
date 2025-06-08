@@ -32,4 +32,10 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("Error", e.getMessage()));
     }
+
+    @ExceptionHandler(SkillExistsException.class)
+    public ResponseEntity<?> handleSkillExists(SkillExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("Error", e.getMessage()));
+    }
 }

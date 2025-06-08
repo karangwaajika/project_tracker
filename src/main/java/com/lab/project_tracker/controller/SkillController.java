@@ -1,0 +1,41 @@
+package com.lab.project_tracker.controller;
+
+
+import com.lab.project_tracker.dto.project.ProjectDto;
+import com.lab.project_tracker.dto.project.ProjectResponseDto;
+import com.lab.project_tracker.dto.skill.SkillDto;
+import com.lab.project_tracker.dto.skill.SkillResponseDto;
+import com.lab.project_tracker.mapper.ProjectMapper;
+import com.lab.project_tracker.mapper.SkillMapper;
+import com.lab.project_tracker.model.Project;
+import com.lab.project_tracker.model.SkillEntity;
+import com.lab.project_tracker.service.SkillService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("skills")
+@Tag(name = "Skill Controller", description = "Manage all the Skill's urls")
+public class SkillController {
+    SkillService skillService;
+
+    public SkillController(SkillService skillService) {
+        this.skillService = skillService;
+    }
+
+    @PostMapping(name = "add_skill", path = "/add")
+    @Operation(summary = "Create skill",
+            description = "This request inserts a skill to the database and returns " +
+                          "the inserted skill ")
+    public ResponseEntity<SkillResponseDto> addSkill(@RequestBody SkillDto skillDto){
+        SkillEntity savedSkill = this.skillService.create(skillDto);
+        SkillResponseDto savedSkillDto = SkillMapper.toResponseDto(savedSkill);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedSkillDto);
+    }
+}
