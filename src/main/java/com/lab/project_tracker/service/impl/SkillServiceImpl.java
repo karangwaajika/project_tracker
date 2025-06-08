@@ -26,7 +26,7 @@ public class SkillServiceImpl implements SkillService {
     public SkillEntity create(SkillDto skillDto) {
         if(findSkillByName(skillDto.getName()).isPresent()){
             throw new SkillExistsException(
-                    String.format("A project with the name '%s' already exist",
+                    String.format("A skill with the name '%s' already exist",
                             skillDto.getName()));
         }
         SkillEntity skillEntity = SkillMapper.toEntity(skillDto);

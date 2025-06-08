@@ -44,4 +44,10 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Map.of("Error", e.getMessage()));
     }
+
+    @ExceptionHandler(DeveloperExistsException.class)
+    public ResponseEntity<?> handleDeveloperExists(DeveloperExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("Error", e.getMessage()));
+    }
 }
