@@ -94,5 +94,14 @@ public class ProjectController {
     }
 
 
+    @GetMapping(name = "view_projects_no_task", path = "/viewNoTask")
+    @Operation(summary = "View Projects",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of projects list")
+    public List<ProjectResponseDto> viewProjectsWithNoTask(Pageable pageable){
+        return this.projectService.findProjectsWithoutTasks();
+    }
+
+
 
 }

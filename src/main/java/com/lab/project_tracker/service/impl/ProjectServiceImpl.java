@@ -122,6 +122,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    public List<ProjectResponseDto> findProjectsWithoutTasks() {
+        List<Project> projects = this.projectRepository.findProjectsWithoutTasks();
+        return projects.stream().map(ProjectMapper::toResponseDto).toList();
+    }
+
+    @Override
     public Optional<Project> findProjectById(Long id) {
         return this.projectRepository.findById(id);
     }

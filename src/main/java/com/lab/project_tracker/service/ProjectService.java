@@ -17,6 +17,7 @@ public interface ProjectService {
     Project partialUpdate(ProjectDto projectdto, Long id);
     void deleteById(Long id);
     List<ProjectResponseDto> findAllProject();
+    List<ProjectResponseDto> findProjectsWithoutTasks();
 
 
 }
