@@ -5,6 +5,7 @@ import com.lab.project_tracker.dto.project.ProjectDto;
 import com.lab.project_tracker.dto.project.ProjectResponseDto;
 import com.lab.project_tracker.dto.skill.SkillDto;
 import com.lab.project_tracker.dto.skill.SkillResponseDto;
+import com.lab.project_tracker.dto.task.TaskResponseDto;
 import com.lab.project_tracker.mapper.ProjectMapper;
 import com.lab.project_tracker.mapper.SkillMapper;
 import com.lab.project_tracker.model.Project;
@@ -12,12 +13,11 @@ import com.lab.project_tracker.model.SkillEntity;
 import com.lab.project_tracker.service.SkillService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("skills")
@@ -38,4 +38,14 @@ public class SkillController {
         SkillResponseDto savedSkillDto = SkillMapper.toResponseDto(savedSkill);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSkillDto);
     }
+
+    @GetMapping(name = "view_skills", path = "view")
+    @Operation(summary = "View Skills",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of skills list")
+    public Page<SkillResponseDto> viewProjects(Pageable pageable){
+
+        return this.skillService.findAll(pageable);
+    }
+
 }

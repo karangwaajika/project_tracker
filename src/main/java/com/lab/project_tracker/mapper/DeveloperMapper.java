@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,11 +50,11 @@ public class DeveloperMapper {
     // Map DTO → Developer entity (requires skills to be passed in!)
     /* this is better, since the skill need service layer. we perform the service layer
     /at the controller level and pass in the needed skills. */
-    public static DeveloperEntity toEntity(DeveloperDto developerDto, Set<SkillEntity> skills) {
+    public static DeveloperEntity toEntity(DeveloperDto developerDto, List<SkillEntity>skillList ) {
         return DeveloperEntity.builder()
                 .name(developerDto.getName())
                 .email(developerDto.getEmail())
-                .skills(skills)
+                .skills(new HashSet<>(skillList))
                 .build();
     }
 }

@@ -1,12 +1,17 @@
 package com.lab.project_tracker.service.impl;
 
 import com.lab.project_tracker.dto.skill.SkillDto;
+import com.lab.project_tracker.dto.skill.SkillResponseDto;
 import com.lab.project_tracker.exception.InvalidSkillException;
 import com.lab.project_tracker.exception.SkillExistsException;
 import com.lab.project_tracker.mapper.SkillMapper;
+import com.lab.project_tracker.mapper.TaskMapper;
 import com.lab.project_tracker.model.SkillEntity;
+import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.repository.SkillRepository;
 import com.lab.project_tracker.service.SkillService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -59,5 +64,11 @@ public class SkillServiceImpl implements SkillService {
             throw new InvalidSkillException("Invalid skill IDs: " + missingIds);
         }
         return skills;
+    }
+
+    @Override
+    public Page<SkillResponseDto> findAll(Pageable pageable) {
+        Page<SkillEntity> taskEntityPage = this.skillRepository.findAll(pageable);
+        return taskEntityPage.map(SkillMapper::toResponseDto);
     }
 }

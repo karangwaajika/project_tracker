@@ -9,8 +9,10 @@ import com.lab.project_tracker.repository.DeveloperRepository;
 import com.lab.project_tracker.service.DeveloperService;
 import com.lab.project_tracker.service.SkillService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,14 +29,16 @@ public class DeveloperServiceImpl implements DeveloperService {
 
     @Override
     public DeveloperEntity create(DeveloperDto developerDto) {
-        if(findDeveloperByEmail(developerDto.getEmail()).isPresent()){
+
+        if (findDeveloperByEmail(developerDto.getEmail()).isPresent()) {
             throw new DeveloperExistsException(
-                    String.format("A developer with the name '%s' already exist",
-                    developerDto.getEmail()));
+                    String.format("A developer with the email '%s' already exists", developerDto.getEmail()));
         }
-        Set<SkillEntity> skills = new HashSet<>(skillService.findAllById(developerDto.getSkillIds()));
-        DeveloperEntity developerEntity = DeveloperMapper.toEntity(developerDto, skills);
-        return this.developerRepository.save(developerEntity);
+
+        List<SkillEntity> skillList = skillService.findAllById(developerDto.getSkillIds());
+        DeveloperEntity developer = DeveloperMapper.toEntity(developerDto, skillList);
+
+        return this.developerRepository.save(developer);
     }
 
     @Override
