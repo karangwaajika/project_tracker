@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -51,11 +52,11 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(taskResponseDto);
     }
 
-    @GetMapping(name = "view_tasks", path = "view")
+    @GetMapping(name = "view_tasks", path = "/view")
     @Operation(summary = "View Tasks",
             description = "This method applies pagination for efficient retrieval " +
                           "of tasks list")
-    public Page<TaskResponseDto> viewProjects(Pageable pageable){
+    public Page<TaskResponseDto> viewTasks(Pageable pageable){
         return this.taskService.findAll(pageable);
     }
 
@@ -92,5 +93,14 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Map.of("message", "Task assigned successfully"));
     }
+
+    @GetMapping(name = "sort_tasks_by_dueDate", path = "/sortByDueDateASC")
+    @Operation(summary = "View Tasks",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of tasks list")
+    public List<TaskResponseDto> sortByDueDate(){
+        return this.taskService.findAllByOrderByDueDateAsc();
+    }
+
 
 }

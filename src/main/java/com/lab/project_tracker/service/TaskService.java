@@ -7,6 +7,7 @@ import com.lab.project_tracker.model.TaskEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TaskService {
@@ -17,4 +18,5 @@ public interface TaskService {
     TaskEntity partialUpdate(TaskDto taskDto, Long id);
     void deleteById(Long id);
     void assignTaskToDeveloper(Long taskId, Long developerId);
+    List<TaskResponseDto> findAllByOrderByDueDateAsc();
 }

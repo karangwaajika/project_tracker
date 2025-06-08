@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -122,6 +123,12 @@ public class TaskServiceImpl implements TaskService {
 
         task.setDeveloper(developer);
         this.taskRepository.save(task);
+    }
+
+    @Override
+    public List<TaskResponseDto> findAllByOrderByDueDateAsc() {
+        List<TaskEntity> tasks = taskRepository.findAllByOrderByDueDateAsc();
+        return tasks.stream().map(TaskMapper::toResponseDto).toList();
     }
 
 }

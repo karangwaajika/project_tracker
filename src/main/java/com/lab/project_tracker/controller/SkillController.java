@@ -39,7 +39,7 @@ public class SkillController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSkillDto);
     }
 
-    @GetMapping(name = "view_skills", path = "view")
+    @GetMapping(name = "view_skills", path = "/view")
     @Operation(summary = "View Skills",
             description = "This method applies pagination for efficient retrieval " +
                           "of skills list")

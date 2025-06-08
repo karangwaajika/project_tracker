@@ -51,7 +51,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(projectResponseDto);
     }
 
-    @GetMapping(name = "view_projects", path = "view")
+    @GetMapping(name = "view_projects", path = "/view")
     @Operation(summary = "View Projects",
             description = "This method applies pagination for efficient retrieval " +
                           "of projects list")
