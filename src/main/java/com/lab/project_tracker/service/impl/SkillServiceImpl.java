@@ -1,6 +1,7 @@
 package com.lab.project_tracker.service.impl;
 
 import com.lab.project_tracker.dto.skill.SkillDto;
+import com.lab.project_tracker.exception.InvalidSkillException;
 import com.lab.project_tracker.exception.SkillExistsException;
 import com.lab.project_tracker.mapper.SkillMapper;
 import com.lab.project_tracker.model.SkillEntity;
@@ -8,7 +9,11 @@ import com.lab.project_tracker.repository.SkillRepository;
 import com.lab.project_tracker.service.SkillService;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class SkillServiceImpl implements SkillService {
@@ -31,5 +36,28 @@ public class SkillServiceImpl implements SkillService {
     @Override
     public Optional<SkillEntity> findSkillByName(String name) {
         return this.skillRepository.findSkillByName(name);
+    }
+
+    @Override
+    public Optional<SkillEntity> findSkillById(Long id) {
+        return this.skillRepository.findById(id);
+    }
+
+    @Override
+    public List<SkillEntity> findAllById(Set<Long> ids) {
+        List<SkillEntity> skills = skillRepository.findAllById(ids);
+
+        // Validation: ensure all requested IDs are found
+        Set<Long> foundIds = skills.stream()
+                .map(SkillEntity::getId)
+                .collect(Collectors.toSet());
+
+        Set<Long> missingIds = new HashSet<>(ids);
+        missingIds.removeAll(foundIds);
+
+        if (!missingIds.isEmpty()) {
+            throw new InvalidSkillException("Invalid skill IDs: " + missingIds);
+        }
+        return skills;
     }
 }

@@ -38,4 +38,10 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(Map.of("Error", e.getMessage()));
     }
+
+    @ExceptionHandler(InvalidSkillException.class)
+    public ResponseEntity<?> handleSkillExists(InvalidSkillException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("Error", e.getMessage()));
+    }
 }
