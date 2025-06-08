@@ -3,12 +3,14 @@ package com.lab.project_tracker.service.impl;
 import com.lab.project_tracker.model.AuditLogEntity;
 import com.lab.project_tracker.repository.AuditLogRepository;
 import com.lab.project_tracker.service.AuditLogService;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Service
 public class AuditLogServiceImpl implements AuditLogService {
 
     private AuditLogRepository auditLogRepository;
@@ -18,11 +20,15 @@ public class AuditLogServiceImpl implements AuditLogService {
 
     @Override
     public void logAction(String actionType, String entityType, String entityId, String actor, Map<String, Object> payload) {
-    }
-
-    @Override
-    public List<AuditLogEntity> getLogs(Optional<String> entityType, Optional<String> actorName) {
-        return null;
+        AuditLogEntity log = AuditLogEntity.builder()
+                .actionType(actionType)
+                .entityType(entityType)
+                .entityId(entityId)
+                .actorName(actor)
+                .timestamp(Instant.now())
+                .payload(payload)
+                .build();
+        this.auditLogRepository.save(log);
     }
 
 }

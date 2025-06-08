@@ -9,6 +9,7 @@ import com.lab.project_tracker.mapper.ProjectMapper;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.repository.ProjectRepository;
+import com.lab.project_tracker.service.AuditLogService;
 import com.lab.project_tracker.service.ProjectService;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,14 +19,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
     ProjectRepository projectRepository;
+    AuditLogService auditLogService;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository){
+    public ProjectServiceImpl(ProjectRepository projectRepository,
+                              AuditLogService auditLogService){
+
         this.projectRepository = projectRepository;
+        this.auditLogService = auditLogService;
     }
 
     @Override
@@ -37,6 +43,12 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         Project project = ProjectMapper.toEntity(projectDto);
+
+        // insert log action for create project
+        this.auditLogService.logAction(
+                "CREATE", "Project", project.getId().toString(), "user",
+                Map.of("name", project.getName(), "description", project.getDescription())
+        );
         return this.projectRepository.save(project);
     }
 
@@ -73,6 +85,12 @@ public class ProjectServiceImpl implements ProjectService {
             project.setStatus(projectDto.getStatus());
         }
 
+        // insert log action for update project
+        this.auditLogService.logAction(
+                "UPDATE", "Project", project.getId().toString(), "user",
+                Map.of("name", project.getName(), "description", project.getDescription())
+        );
+
         return this.projectRepository.save(project);
     }
 
@@ -80,11 +98,17 @@ public class ProjectServiceImpl implements ProjectService {
     @CacheEvict(value = "projects", allEntries = true)
     @Transactional
     public void deleteById(Long id) {
-        if(findProjectById(id).isEmpty()){
-            throw new ProjectExistsException(
-                    String.format("A project with the name '%d' already exist",
-                            id));
-        }
+        Project project = findProjectById(id)
+                .orElseThrow( () -> new ProjectNotFoundException(
+                        String.format("A project with the Id '%d' doesn't exist", id))
+                );
+
+        // insert log action for delete project
+        this.auditLogService.logAction(
+                "DELETE", "Project", project.getId().toString(), "user",
+                Map.of("name", project.getName(), "description", project.getDescription())
+        );
+
         this.projectRepository.deleteById(id);
     }
 
