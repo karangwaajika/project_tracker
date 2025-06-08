@@ -2,16 +2,21 @@ package com.lab.project_tracker.service.impl;
 
 import com.lab.project_tracker.dto.project.ProjectDto;
 import com.lab.project_tracker.dto.project.ProjectResponseDto;
+import com.lab.project_tracker.dto.task.TaskResponseDto;
 import com.lab.project_tracker.exception.ProjectExistsException;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
 import com.lab.project_tracker.mapper.ProjectMapper;
 import com.lab.project_tracker.model.Project;
+import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.repository.ProjectRepository;
 import com.lab.project_tracker.service.ProjectService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,6 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @CacheEvict(value = "projects", allEntries = true)
     public Project partialUpdate(ProjectDto projectDto, Long id) {
         Project project = findProjectById(id)
                 .orElseThrow( () -> new ProjectNotFoundException(
@@ -70,6 +76,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @CacheEvict(value = "projects", allEntries = true)
     public void deleteById(Long id) {
         if(findProjectById(id).isEmpty()){
             throw new ProjectExistsException(
@@ -77,6 +84,14 @@ public class ProjectServiceImpl implements ProjectService {
                             id));
         }
         this.projectRepository.deleteById(id);
+    }
+
+    @Override
+    @Cacheable("projects")
+    public List<ProjectResponseDto> findAllProject() {
+        System.out.println("Fetching projects from DB..."); // to verify caching
+        List<Project> tasks = this.projectRepository.findAll();
+        return tasks.stream().map(ProjectMapper::toResponseDto).toList();
     }
 
     @Override

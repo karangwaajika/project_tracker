@@ -51,6 +51,13 @@ public class DeveloperServiceImpl implements DeveloperService {
 
     @Override
     public Optional<DeveloperEntity> findDeveloperByEmail(String email) {
+
         return this.developerRepository.findDeveloperByEmail(email);
+    }
+
+    @Override
+    public List<DeveloperResponseDto> findAllDevelopers() {
+        List<DeveloperEntity> developers = this.developerRepository.findAll();
+        return developers.stream().map(DeveloperMapper::toResponseDto).toList();
     }
 }
