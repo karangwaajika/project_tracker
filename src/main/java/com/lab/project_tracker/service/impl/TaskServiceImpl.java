@@ -131,4 +131,10 @@ public class TaskServiceImpl implements TaskService {
         return tasks.stream().map(TaskMapper::toResponseDto).toList();
     }
 
+    @Override
+    public List<TaskResponseDto> findOverdueTasks() {
+        List<TaskEntity> tasks = this.taskRepository.findOverdueTasks();
+        return tasks.stream().map(TaskMapper::toResponseDto).toList();
+    }
+
 }

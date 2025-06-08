@@ -19,4 +19,5 @@ public interface TaskService {
     void deleteById(Long id);
     void assignTaskToDeveloper(Long taskId, Long developerId);
     List<TaskResponseDto> findAllByOrderByDueDateAsc();
+    List<TaskResponseDto> findOverdueTasks();
 }

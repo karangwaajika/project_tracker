@@ -102,5 +102,12 @@ public class TaskController {
         return this.taskService.findAllByOrderByDueDateAsc();
     }
 
+    @GetMapping(name = "filter_overdue", path = "/overdue")
+    @Operation(summary = "View Tasks",
+            description = "This method filter overdue tasks for efficient retrieval " +
+                          "of tasks list")
+    public List<TaskResponseDto> filterOverdue(){
+        return this.taskService.findOverdueTasks();
+    }
 
 }
