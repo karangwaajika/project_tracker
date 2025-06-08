@@ -1,14 +1,9 @@
 package com.lab.project_tracker.controller;
 
 
-import com.lab.project_tracker.dto.project.ProjectDto;
-import com.lab.project_tracker.dto.project.ProjectResponseDto;
 import com.lab.project_tracker.dto.skill.SkillDto;
 import com.lab.project_tracker.dto.skill.SkillResponseDto;
-import com.lab.project_tracker.dto.task.TaskResponseDto;
-import com.lab.project_tracker.mapper.ProjectMapper;
 import com.lab.project_tracker.mapper.SkillMapper;
-import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.model.SkillEntity;
 import com.lab.project_tracker.service.SkillService;
 import io.swagger.v3.oas.annotations.Operation;

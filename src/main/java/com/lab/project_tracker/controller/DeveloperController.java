@@ -21,7 +21,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("developers")
-@Tag(name = "Skill Controller", description = "Manage all the Developer's urls")
+@Tag(name = "Developer Controller", description = "Manage all the Developer's urls")
 public class DeveloperController {
     DeveloperService developerService;
 

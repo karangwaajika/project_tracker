@@ -31,4 +31,17 @@ public class AuditLogServiceImpl implements AuditLogService {
         this.auditLogRepository.save(log);
     }
 
+    @Override
+    public List<AuditLogEntity> getLogs(Optional<String> entityType, Optional<String> actorName) {
+        if (entityType.isPresent() && actorName.isPresent()) {
+            return auditLogRepository.findByEntityTypeAndActorName(entityType.get(), actorName.get());
+        } else if (entityType.isPresent()) {
+            return auditLogRepository.findByEntityType(entityType.get());
+        } else if (actorName.isPresent()) {
+            return auditLogRepository.findByActorName(actorName.get());
+        } else {
+            return auditLogRepository.findAll();
+        }
+    }
+
 }
