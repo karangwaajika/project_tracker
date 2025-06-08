@@ -2,6 +2,7 @@ package com.lab.project_tracker.service.impl;
 
 import com.lab.project_tracker.dto.TaskDto;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
+import com.lab.project_tracker.exception.TaskExistsException;
 import com.lab.project_tracker.mapper.TaskMapper;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.model.TaskEntity;
@@ -33,8 +34,24 @@ public class TaskServiceImpl implements TaskService {
                             taskDto.getProjectId()));
         }
 
+        if(findTaskByTitle(taskDto.getTitle()).isPresent()){
+            throw new TaskExistsException(
+                    String.format("A task with the title '%s' already exist",
+                            taskDto.getTitle()));
+        }
+
         TaskEntity taskEntity = TaskMapper.toEntity(taskDto, project.get());
         return this.taskRepository.save(taskEntity);
+    }
+
+    @Override
+    public Optional<TaskEntity> findTaskById(Long id) {
+        return this.taskRepository.findById(id);
+    }
+
+    @Override
+    public Optional<TaskEntity> findTaskByTitle(String title) {
+        return this.taskRepository.findTaskEntitiesByTitle(title);
     }
 
 }
