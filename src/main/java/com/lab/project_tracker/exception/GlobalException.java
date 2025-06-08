@@ -32,4 +32,28 @@ public class GlobalException {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("Error", e.getMessage()));
     }
+
+    @ExceptionHandler(SkillExistsException.class)
+    public ResponseEntity<?> handleSkillExists(SkillExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("Error", e.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidSkillException.class)
+    public ResponseEntity<?> handleSkillExists(InvalidSkillException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("Error", e.getMessage()));
+    }
+
+    @ExceptionHandler(DeveloperExistsException.class)
+    public ResponseEntity<?> handleDeveloperExists(DeveloperExistsException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("Error", e.getMessage()));
+    }
+
+    @ExceptionHandler(DeveloperNotFoundException.class)
+    public ResponseEntity<?> handleDeveloperNotFound(DeveloperNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("Error", e.getMessage()));
+    }
 }

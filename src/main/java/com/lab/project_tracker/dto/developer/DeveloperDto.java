@@ -1,9 +1,6 @@
-package com.lab.project_tracker.dto;
+package com.lab.project_tracker.dto.developer;
 
 import com.lab.project_tracker.util.ProjectStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /* this is dto is used for inserting or updating */
 
@@ -18,10 +16,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProjectDto {
+public class DeveloperDto {
     private String name;
-    private String description;
-    private LocalDate deadline;
-    private ProjectStatus status;
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String email;
+    private Set<Long> skillIds; // IDs of existing skills
 }

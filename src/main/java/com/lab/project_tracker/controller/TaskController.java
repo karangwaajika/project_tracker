@@ -1,19 +1,23 @@
 package com.lab.project_tracker.controller;
 
-import com.lab.project_tracker.dto.TaskDto;
-import com.lab.project_tracker.dto.TaskResponseDto;
+import com.lab.project_tracker.dto.task.TaskDto;
+import com.lab.project_tracker.dto.task.TaskResponseDto;
 import com.lab.project_tracker.exception.TaskNotFoundException;
 import com.lab.project_tracker.mapper.TaskMapper;
 import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.service.TaskService;
+import com.lab.project_tracker.util.DeveloperTaskCount;
+import com.lab.project_tracker.util.TaskStatusCount;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -51,11 +55,11 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK).body(taskResponseDto);
     }
 
-    @GetMapping(name = "view_tasks", path = "view")
+    @GetMapping(name = "view_tasks", path = "/view")
     @Operation(summary = "View Tasks",
             description = "This method applies pagination for efficient retrieval " +
                           "of tasks list")
-    public Page<TaskResponseDto> viewProjects(Pageable pageable){
+    public Page<TaskResponseDto> viewTasks(Pageable pageable){
         return this.taskService.findAll(pageable);
     }
 
@@ -82,5 +86,48 @@ public class TaskController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Map.of("message", "Task deleted successfully"));
     }
+
+    @PutMapping(name = "assign_task", path = "/assign")
+    @Operation(summary = "Delete Task",
+            description = "The task is assign using its id that is retrieved " +
+                          "as a query parameter from the url")
+    public ResponseEntity<?> assignTask(@RequestParam Long taskId, @RequestParam Long developerId){
+        this.taskService.assignTaskToDeveloper(taskId, developerId);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Map.of("message", "Task assigned successfully"));
+    }
+
+    @GetMapping(name = "sort_tasks_by_dueDate", path = "/sortByDueDateASC")
+    @Operation(summary = "View Tasks",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of tasks list")
+    public List<TaskResponseDto> sortByDueDate(){
+        return this.taskService.findAllByOrderByDueDateAsc();
+    }
+
+    @GetMapping(name = "filter_overdue", path = "/overdue")
+    @Operation(summary = "View Tasks",
+            description = "This method filter overdue tasks for efficient retrieval " +
+                          "of tasks list")
+    public List<TaskResponseDto> filterOverdue(){
+        return this.taskService.findOverdueTasks();
+    }
+
+    @GetMapping(name = "view_to_developer_tasks", path = "/topDeveloper")
+    @Operation(summary = "View Tasks",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of tasks list")
+    public List<DeveloperTaskCount> viewTopDevTasks(){
+        return this.taskService.findTopDevelopers(PageRequest.of(0, 5));
+    }
+
+    @GetMapping(name = "view_tasks_counts", path = "/taskStatusCount")
+    @Operation(summary = "View Tasks",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of tasks list")
+    public List<TaskStatusCount> countTasksByStatus(){
+        return this.taskService.countTasksByStatus();
+    }
+
 
 }

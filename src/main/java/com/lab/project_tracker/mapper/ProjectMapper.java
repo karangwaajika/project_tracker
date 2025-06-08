@@ -1,16 +1,14 @@
 package com.lab.project_tracker.mapper;
 
-import com.lab.project_tracker.dto.ProjectDto;
-import com.lab.project_tracker.dto.ProjectResponseDto;
-import com.lab.project_tracker.dto.TaskDto;
-import com.lab.project_tracker.dto.TaskDtoSummary;
+import com.lab.project_tracker.dto.project.ProjectDto;
+import com.lab.project_tracker.dto.project.ProjectResponseDto;
+import com.lab.project_tracker.dto.task.TaskDtoSummary;
 import com.lab.project_tracker.model.Project;
 import com.lab.project_tracker.model.TaskEntity;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ProjectMapper {
     public static ProjectResponseDto toResponseDto(Project project) {

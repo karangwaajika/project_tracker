@@ -1,25 +1,37 @@
 package com.lab.project_tracker.service.impl;
 
-import com.lab.project_tracker.dto.ProjectDto;
-import com.lab.project_tracker.dto.ProjectResponseDto;
+import com.lab.project_tracker.dto.project.ProjectDto;
+import com.lab.project_tracker.dto.project.ProjectResponseDto;
+import com.lab.project_tracker.dto.task.TaskResponseDto;
 import com.lab.project_tracker.exception.ProjectExistsException;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
 import com.lab.project_tracker.mapper.ProjectMapper;
 import com.lab.project_tracker.model.Project;
+import com.lab.project_tracker.model.TaskEntity;
 import com.lab.project_tracker.repository.ProjectRepository;
+import com.lab.project_tracker.service.AuditLogService;
 import com.lab.project_tracker.service.ProjectService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
     ProjectRepository projectRepository;
+    AuditLogService auditLogService;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository){
+    public ProjectServiceImpl(ProjectRepository projectRepository,
+                              AuditLogService auditLogService){
+
         this.projectRepository = projectRepository;
+        this.auditLogService = auditLogService;
     }
 
     @Override
@@ -31,7 +43,14 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         Project project = ProjectMapper.toEntity(projectDto);
-        return this.projectRepository.save(project);
+        Project savedProject = this.projectRepository.save(project);
+
+        // insert log action for create project
+        this.auditLogService.logAction(
+                "CREATE", "Project", savedProject.getId().toString(), "user",
+                Map.of("name", savedProject.getName(), "description", savedProject.getDescription())
+        );
+        return savedProject;
     }
 
     @Override
@@ -47,6 +66,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @CacheEvict(value = "projects", allEntries = true)
     public Project partialUpdate(ProjectDto projectDto, Long id) {
         Project project = findProjectById(id)
                 .orElseThrow( () -> new ProjectNotFoundException(
@@ -66,17 +86,45 @@ public class ProjectServiceImpl implements ProjectService {
             project.setStatus(projectDto.getStatus());
         }
 
+        // insert log action for update project
+        this.auditLogService.logAction(
+                "UPDATE", "Project", project.getId().toString(), "user",
+                Map.of("name", project.getName(), "description", project.getDescription())
+        );
+
         return this.projectRepository.save(project);
     }
 
     @Override
+    @CacheEvict(value = "projects", allEntries = true)
+    @Transactional
     public void deleteById(Long id) {
-        if(findProjectById(id).isEmpty()){
-            throw new ProjectExistsException(
-                    String.format("A project with the name '%d' already exist",
-                            id));
-        }
+        Project project = findProjectById(id)
+                .orElseThrow( () -> new ProjectNotFoundException(
+                        String.format("A project with the Id '%d' doesn't exist", id))
+                );
+
+        // insert log action for delete project
+        this.auditLogService.logAction(
+                "DELETE", "Project", project.getId().toString(), "user",
+                Map.of("name", project.getName(), "description", project.getDescription())
+        );
+
         this.projectRepository.deleteById(id);
+    }
+
+    @Override
+    @Cacheable("projects")
+    public List<ProjectResponseDto> findAllProject() {
+        System.out.println("Fetching projects from DB..."); // to verify caching
+        List<Project> tasks = this.projectRepository.findAll();
+        return tasks.stream().map(ProjectMapper::toResponseDto).toList();
+    }
+
+    @Override
+    public List<ProjectResponseDto> findProjectsWithoutTasks() {
+        List<Project> projects = this.projectRepository.findProjectsWithoutTasks();
+        return projects.stream().map(ProjectMapper::toResponseDto).toList();
     }
 
     @Override

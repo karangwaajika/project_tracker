@@ -1,14 +1,15 @@
 package com.lab.project_tracker.service;
 
 
-import com.lab.project_tracker.dto.ProjectDto;
-import com.lab.project_tracker.dto.TaskDto;
-import com.lab.project_tracker.dto.TaskResponseDto;
-import com.lab.project_tracker.model.Project;
+import com.lab.project_tracker.dto.task.TaskDto;
+import com.lab.project_tracker.dto.task.TaskResponseDto;
 import com.lab.project_tracker.model.TaskEntity;
+import com.lab.project_tracker.util.DeveloperTaskCount;
+import com.lab.project_tracker.util.TaskStatusCount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TaskService {
@@ -18,4 +19,9 @@ public interface TaskService {
     Page<TaskResponseDto> findAll(Pageable pageable);
     TaskEntity partialUpdate(TaskDto taskDto, Long id);
     void deleteById(Long id);
+    void assignTaskToDeveloper(Long taskId, Long developerId);
+    List<TaskResponseDto> findAllByOrderByDueDateAsc();
+    List<TaskResponseDto> findOverdueTasks();
+    List<DeveloperTaskCount> findTopDevelopers(Pageable pageable);
+    List<TaskStatusCount> countTasksByStatus();
 }

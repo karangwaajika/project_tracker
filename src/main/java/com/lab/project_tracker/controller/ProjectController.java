@@ -1,7 +1,7 @@
 package com.lab.project_tracker.controller;
 
-import com.lab.project_tracker.dto.ProjectDto;
-import com.lab.project_tracker.dto.ProjectResponseDto;
+import com.lab.project_tracker.dto.project.ProjectDto;
+import com.lab.project_tracker.dto.project.ProjectResponseDto;
 import com.lab.project_tracker.exception.ProjectNotFoundException;
 import com.lab.project_tracker.mapper.ProjectMapper;
 import com.lab.project_tracker.model.Project;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -51,7 +52,7 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK).body(projectResponseDto);
     }
 
-    @GetMapping(name = "view_projects", path = "view")
+    @GetMapping(name = "view_projects", path = "/view")
     @Operation(summary = "View Projects",
             description = "This method applies pagination for efficient retrieval " +
                           "of projects list")
@@ -82,6 +83,25 @@ public class ProjectController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Map.of("message", "Project deleted successfully"));
     }
+
+    @GetMapping(name = "view_projects", path = "/viewAll")
+    @Operation(summary = "View Projects",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of projects list")
+    public ResponseEntity<List<ProjectResponseDto>> viewAllProjects(){
+        List<ProjectResponseDto> projects = this.projectService.findAllProject();
+        return ResponseEntity.status(HttpStatus.OK).body(projects);
+    }
+
+
+    @GetMapping(name = "view_projects_no_task", path = "/viewNoTask")
+    @Operation(summary = "View Projects",
+            description = "This method applies pagination for efficient retrieval " +
+                          "of projects list")
+    public List<ProjectResponseDto> viewProjectsWithNoTask(Pageable pageable){
+        return this.projectService.findProjectsWithoutTasks();
+    }
+
 
 
 }

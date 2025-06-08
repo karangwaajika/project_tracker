@@ -36,4 +36,8 @@ public class TaskEntity {
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
+
+    @ManyToOne
+    @JoinColumn(name = "developer_id")
+    private DeveloperEntity developer;
 }
